@@ -1,3 +1,7 @@
+
+## ⚙️ Project Structure
+
+```
 data-analyst-agent/
 ├── main.py                  # FastAPI entry point
 ├── agent/
@@ -26,3 +30,7 @@ Project2_Agentic/
 ├── question.txt               # Input task to be POSTed to the API
 ├── promptfoo.yaml             # Evaluation config for promptfoo
 ├── requirements.txt           # Python dependencies (optional)
+
+
+
+```
