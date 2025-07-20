@@ -1,0 +1,59 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# matplotlib plot caches
+*.png
+*.svg
+*.jpg
+*.jpeg
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# FastAPI + Uvicorn log files
+*.log
+
+# Cache and local files
+.cache/
+*.sqlite
+*.db
+*.tar.gz
+*.parquet
+
+# Output files
+output/
+data/
+*.pdf
+*.xlsx
+*.csv
+
+# Environment files
+.env
+.env.*
+
+# mypy and pyright
+.mypy_cache/
+.pyright/
+
+# Promptfoo & LLM agent test artifacts
+promptfoo.json
+promptfoo-results/

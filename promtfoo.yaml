@@ -1,0 +1,64 @@
+description: "TDS Data Analyst Agent – generic eval (20-point rubric)"
+
+providers:
+  - id: https
+    config:
+      url: http://127.0.0.1:8000/api/  # Or your deployed API endpoint
+      method: POST
+      body: file://question.txt
+      transformResponse: json
+
+assert:
+  - type: is-json
+    value: {type: array, minItems: 4, maxItems: 4}
+    weight: 0
+
+  - type: python
+    weight: 4
+    value: |
+      import json
+      print(json.loads(output)[0] == 1)
+
+  - type: python
+    weight: 4
+    value: |
+      import json, re
+      print(bool(re.search(r'titanic', json.loads(output)[1], re.I)))
+
+  - type: python
+    weight: 4
+    value: |
+      import json, math
+      print(abs(float(json.loads(output)[2]) - 0.485782) <= 0.001)
+
+  - type: llm-rubric
+    provider: openai:gpt-4.1-nano
+    weight: 8
+    preprocess: |
+      import json
+      data = json.loads(output)
+      context['plot'] = data[3]
+    rubricPrompt: |
+      [
+        { "role": "system",
+          "content": "Grade the scatterplot. Award *score 1* only iff ALL are true: \
+          (a) it’s a scatterplot of Rank (x-axis) vs Peak (y-axis); \
+          (b) a dotted **red** regression line is present; \
+          (c) axes are visible & labelled; \
+          (d) file size < 100 kB. Otherwise score 0. \
+          Respond as JSON: {scatterplot:bool, regression:bool, axes:bool, size:bool, score:number}"
+        },
+        { "role": "user",
+          "content": [
+            { "type": "image_url",
+              "image_url": { "url": "{{plot}}" }
+            },
+            { "type": "text",
+              "text": "Here is the original task:\n\n{{vars.question}}\n\nReview the image and JSON above." }
+          ]
+        }
+      ]
+    threshold: 0.99
+
+tests:
+  - description: "Data analysis"
